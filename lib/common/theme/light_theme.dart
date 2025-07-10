@@ -10,6 +10,7 @@ ThemeData lightTheme() {
     scaffoldBackgroundColor: backgroundLight,
     extensions: [CustomThemeExtension.lightMode],
     appBarTheme: AppBarTheme(
+      titleTextStyle: TextStyle(fontSize: 18),
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
@@ -30,6 +31,10 @@ ThemeData lightTheme() {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
+    ),
+    dialogTheme: DialogThemeData(
+      backgroundColor: backgroundLight,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ),
   );
 }

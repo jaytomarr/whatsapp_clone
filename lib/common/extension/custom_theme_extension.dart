@@ -15,6 +15,8 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     langBtnBgColor: Color(0xFFF7F8FA),
     langBtnHighlightColor: Color(0xFFE8E8ED),
     authAppBarTextColor: greenLight,
+    photoIconBgColor: Color(0xfff0f2f3),
+    photoIconColor: Color(0xff9daab3),
   );
   static final darkMode = CustomThemeExtension(
     circleImageColor: greenDark,
@@ -23,6 +25,8 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     langBtnBgColor: Color(0xFF182229),
     langBtnHighlightColor: Color(0xFF09141A),
     authAppBarTextColor: Color(0xffe9edef),
+    photoIconBgColor: Color(0xff283339),
+    photoIconColor: Color(0xff61717b),
   );
   final Color? circleImageColor;
   final Color? greyColor;
@@ -30,6 +34,8 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
   final Color? langBtnBgColor;
   final Color? langBtnHighlightColor;
   final Color? authAppBarTextColor;
+  final Color? photoIconBgColor;
+  final Color? photoIconColor;
 
   CustomThemeExtension({
     this.circleImageColor,
@@ -38,6 +44,8 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     this.langBtnBgColor,
     this.langBtnHighlightColor,
     this.authAppBarTextColor,
+    this.photoIconBgColor,
+    this.photoIconColor,
   });
 
   @override
@@ -48,6 +56,8 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     Color? langBtnBgColor,
     Color? langBtnHighlightColor,
     Color? authAppBarTextColor,
+    Color? photoIconBgColor,
+    Color? photoIconColor,
   }) {
     return CustomThemeExtension(
       circleImageColor: circleImageColor ?? this.circleImageColor,
@@ -56,6 +66,8 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
       langBtnBgColor: langBtnBgColor ?? this.langBtnBgColor,
       langBtnHighlightColor: langBtnBgColor ?? this.langBtnBgColor,
       authAppBarTextColor: authAppBarTextColor ?? this.authAppBarTextColor,
+      photoIconBgColor: photoIconBgColor ?? this.photoIconBgColor,
+      photoIconColor: photoIconColor ?? this.photoIconColor,
     );
   }
 
@@ -80,6 +92,8 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
         other.authAppBarTextColor,
         t,
       ),
+      photoIconBgColor: Color.lerp(photoIconBgColor, other.photoIconBgColor, t),
+      photoIconColor: Color.lerp(photoIconColor, other.photoIconColor, t),
     );
   }
 }

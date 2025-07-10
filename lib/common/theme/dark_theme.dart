@@ -10,6 +10,7 @@ ThemeData darkTheme() {
     scaffoldBackgroundColor: backgroundDark,
     extensions: [CustomThemeExtension.darkMode],
     appBarTheme: AppBarTheme(
+      titleTextStyle: TextStyle(fontSize: 18),
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,
@@ -30,6 +31,10 @@ ThemeData darkTheme() {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
+    ),
+    dialogTheme: DialogThemeData(
+      backgroundColor: greyBackground,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ),
   );
 }
