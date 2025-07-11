@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whatsapp_clone/common/extension/custom_theme_extension.dart';
 import 'package:whatsapp_clone/common/routes/routes.dart';
 import 'package:whatsapp_clone/common/theme/dark_theme.dart';
 import 'package:whatsapp_clone/common/theme/light_theme.dart';
@@ -11,7 +11,8 @@ import 'package:whatsapp_clone/feature/welcome/pages/welcome_page.dart';
 import 'package:whatsapp_clone/firebase_options.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -32,6 +33,7 @@ class MyApp extends ConsumerWidget {
           .watch(userInfoAuthProvider)
           .when(
             data: (user) {
+              FlutterNativeSplash.remove();
               if (user == null) return WelcomePage();
               return HomePage();
             },
@@ -41,7 +43,7 @@ class MyApp extends ConsumerWidget {
               );
             },
             loading: () {
-              return Scaffold(body: Center(child: CircularProgressIndicator()));
+              return SizedBox();
             },
           ),
       onGenerateRoute: Routes.onGenerateRoute,
