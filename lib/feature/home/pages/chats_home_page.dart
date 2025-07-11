@@ -5,7 +5,7 @@ class ChatsHomePage extends StatelessWidget {
   const ChatsHomePage({super.key});
 
   navigateToContactsPage(context) {
-    Navigator.pushNamed(context, Routes.conatcts);
+    Navigator.pushNamed(context, Routes.contacts);
   }
 
   @override

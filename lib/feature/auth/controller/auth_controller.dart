@@ -19,6 +19,16 @@ class AuthController {
 
   AuthController({required this.authRepository, required this.ref});
 
+  //functions
+
+  Stream<UserModel> getuserPresenceStatus({required String uid}) {
+    return authRepository.getuserPresenceStatus(uid: uid);
+  }
+
+  void updateUserPresence() {
+    return authRepository.updateUserPresence();
+  }
+
   Future<UserModel?> getCurrentUserInfo() async {
     UserModel? user = await authRepository.getCurrentUserInfo();
     return user;
