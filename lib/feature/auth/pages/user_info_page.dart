@@ -91,14 +91,14 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
             Divider(color: context.theme.greyColor!.withValues(alpha: 0.3)),
             SizedBox(height: 5),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(width: 20),
                 imagePickerIcon(
-                  onTap: pickImageFromCamera(),
+                  onTap: pickImageFromCamera,
                   icon: Icons.camera_alt_rounded,
                   text: 'Camera',
                 ),
-                SizedBox(width: 15),
+                SizedBox(width: 20),
                 imagePickerIcon(
                   onTap: () async {
                     Navigator.pop(context);
@@ -118,7 +118,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                 ),
               ],
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 30),
           ],
         );
       },

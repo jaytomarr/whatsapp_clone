@@ -47,10 +47,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     ref
         .read(authControllerProvider)
-        .sendSmsCode(context: context, phoneNumber: '$countryCode$phoneNumber');
+        .sendSmsCode(
+          context: context,
+          phoneNumber: "+$countryCode$phoneNumber",
+        );
   }
 
   showCountryCodePicker() {
+    print(phoneNumberController.text);
+    print(countryNameController.text);
+    print(countryCodeController.text);
     showCountryPicker(
       context: context,
       showPhoneCode: true,
@@ -135,7 +141,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             padding: const EdgeInsets.symmetric(horizontal: 50),
             child: CustomTextField(
               controller: countryNameController,
-              onTap: showCountryCodePicker(),
+              onTap: () => showCountryCodePicker(),
               readOnly: true,
               suffixIcon: Icon(Icons.arrow_drop_down, color: greenDark),
             ),
@@ -149,7 +155,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   width: 70,
                   child: CustomTextField(
                     controller: countryCodeController,
-                    onTap: showCountryCodePicker(),
+                    onTap: () => showCountryCodePicker(),
                     prefixText: '+',
                     readOnly: true,
                   ),
@@ -176,7 +182,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CustomElevatedButton(
-        onPressed: () {},
+        onPressed: () => sendCodeToPhone(),
         text: 'Next',
         buttonWidth: 90,
       ),

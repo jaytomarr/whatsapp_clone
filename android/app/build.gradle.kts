@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.example.whatsapp_clone"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = "28.2.13676358"
 
     compileOptions {
@@ -27,7 +27,7 @@ android {
         applicationId = "com.example.whatsapp_clone"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 21
+        minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
