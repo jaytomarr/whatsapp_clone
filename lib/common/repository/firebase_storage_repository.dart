@@ -13,7 +13,7 @@ class FirebaseStorageRepository {
 
   FirebaseStorageRepository({required this.firebaseStorage});
 
-  storFileToFirebase(String ref, var file) async {
+  storeFileToFirebase(String ref, var file) async {
     UploadTask? uploadTask;
     if (file is File) {
       uploadTask = firebaseStorage.ref().child(ref).putFile(file);

@@ -5,19 +5,17 @@ import 'package:custom_clippers/custom_clippers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:whatsapp_clone/common/extension/custom_theme_extension.dart';
 import 'package:whatsapp_clone/common/helper/show_last_seen.dart';
-import 'package:whatsapp_clone/common/models/message_model.dart';
 import 'package:whatsapp_clone/common/models/user_model.dart';
 import 'package:whatsapp_clone/common/routes/routes.dart';
-import 'package:whatsapp_clone/common/utils/colors.dart';
 import 'package:whatsapp_clone/common/widgets/custom_icon_button.dart';
 import 'package:whatsapp_clone/feature/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/feature/chat/controllers/chat_controller.dart';
 import 'package:whatsapp_clone/feature/chat/widgets/chat_text_field.dart';
 import 'package:whatsapp_clone/feature/chat/widgets/message_card.dart';
+import 'package:whatsapp_clone/feature/chat/widgets/show_date_card.dart';
 import 'package:whatsapp_clone/feature/chat/widgets/yellow_card.dart';
 
 final pageStorageBucket = PageStorageBucket();
@@ -208,9 +206,20 @@ class ChatPage extends ConsumerWidget {
                                   snapshot.data![index - 1].senderId &&
                               message.senderId !=
                                   snapshot.data![index + 1].senderId);
+                      final isShowDateCard =
+                          (index == 0) ||
+                          ((index == snapshot.data!.length - 1) &&
+                              (message.timeSent.day >
+                                  snapshot.data![index - 1].timeSent.day)) ||
+                          (message.timeSent.day >
+                                  snapshot.data![index - 1].timeSent.day &&
+                              message.timeSent.day <=
+                                  snapshot.data![index + 1].timeSent.day);
                       return Column(
                         children: [
                           if (index == 0) YellowCard(),
+                          if (isShowDateCard)
+                            ShowDateCard(date: message.timeSent),
                           MessageCard(
                             isSender: isSender,
                             haveNip: haveNip,

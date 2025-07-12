@@ -90,7 +90,7 @@ class AuthRepository {
       if (profileImage != null && profileImage is! String) {
         profileImageUrl = await ref
             .read(firebaseStorageRepositoryProvider)
-            .storFileToFirebase('profileImage/$uid', profileImage);
+            .storeFileToFirebase('profileImage/$uid', profileImage);
       }
       UserModel user = UserModel(
         username: username,

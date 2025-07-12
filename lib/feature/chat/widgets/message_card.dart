@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_clippers/custom_clippers.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:whatsapp_clone/common/enum/message_type.dart' as MyMessagetype;
 import 'package:whatsapp_clone/common/extension/custom_theme_extension.dart';
 import 'package:whatsapp_clone/common/models/message_model.dart';
 
@@ -43,42 +45,80 @@ class MessageCard extends StatelessWidget {
                 bubbleRadius: haveNip ? 12 : 0,
               )
             : null,
-        child: Container(
-          decoration: BoxDecoration(
-            color: isSender
-                ? context.theme.senderChatCardBg
-                : context.theme.receiverChatCardBg,
-            boxShadow: [BoxShadow(color: Colors.black38)],
-            borderRadius: haveNip ? null : BorderRadius.circular(12),
-          ),
-          padding: EdgeInsets.only(
-            top: 8,
-            bottom: 8,
-            left: isSender ? 10 : 15,
-            right: isSender ? 15 : 10,
-          ),
-          child: Stack(
-            children: [
-              Padding(
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: isSender
+                    ? context.theme.senderChatCardBg
+                    : context.theme.receiverChatCardBg,
+                boxShadow: [BoxShadow(color: Colors.black38)],
+                borderRadius: haveNip ? null : BorderRadius.circular(12),
+              ),
+              child: Padding(
                 padding: const EdgeInsets.only(bottom: 5),
-                child: Text(
-                  "${message.textMessage}         ",
-                  style: TextStyle(fontSize: 16),
-                ),
+                child: message.type == MyMessagetype.MessageType.image
+                    ? Padding(
+                        padding: const EdgeInsets.only(
+                          top: 3,
+                          left: 3,
+                          right: 3,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image(
+                            image: CachedNetworkImageProvider(
+                              message.textMessage,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: EdgeInsets.only(
+                          top: 8,
+                          bottom: 8,
+                          left: isSender ? 10 : 15,
+                          right: isSender ? 15 : 10,
+                        ),
+                        child: Text(
+                          "${message.textMessage}         ",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
               ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Text(
-                  DateFormat.Hm().format(message.timeSent),
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: context.theme.greyColor,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+            Positioned(
+              bottom: message.type == MyMessagetype.MessageType.text ? 8 : 4,
+              right: message.type == MyMessagetype.MessageType.text
+                  ? isSender
+                        ? 15
+                        : 10
+                  : 4,
+              child: message.type == MyMessagetype.MessageType.text
+                  ? Text(
+                      DateFormat.Hm().format(message.timeSent),
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: context.theme.greyColor,
+                      ),
+                    )
+                  : Container(
+                      padding: EdgeInsets.only(
+                        left: 20,
+                        top: 10,
+                        right: 10,
+                        bottom: 10,
+                      ),
+                      child: Text(
+                        DateFormat.Hm().format(message.timeSent),
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: context.theme.greyColor,
+                        ),
+                      ),
+                    ),
+            ),
+          ],
         ),
       ),
     );
