@@ -49,5 +49,13 @@ ThemeData darkTheme() {
       backgroundColor: greenDark,
       foregroundColor: Colors.white,
     ),
+    listTileTheme: ListTileThemeData(
+      iconColor: greyDark,
+      tileColor: backgroundDark,
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStatePropertyAll(greyDark),
+      trackColor: WidgetStatePropertyAll(Color(0xff344047)),
+    ),
   );
 }

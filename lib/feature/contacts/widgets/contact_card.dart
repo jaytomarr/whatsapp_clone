@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/common/extension/custom_theme_extension.dart';
 import 'package:whatsapp_clone/common/models/user_model.dart';
@@ -23,7 +24,7 @@ class ContactCard extends StatelessWidget {
         backgroundColor: context.theme.greyColor!.withValues(alpha: 0.3),
         radius: 20,
         backgroundImage: contactsSource.profileImageUrl.isNotEmpty
-            ? NetworkImage(contactsSource.profileImageUrl)
+            ? CachedNetworkImageProvider(contactsSource.profileImageUrl)
             : null,
         child: contactsSource.profileImageUrl.isEmpty
             ? Icon(Icons.person, size: 30, color: Colors.white)
