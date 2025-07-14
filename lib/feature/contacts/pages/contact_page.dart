@@ -50,7 +50,31 @@ class ContactPage extends ConsumerWidget {
         ),
         actions: [
           CustomIconButton(onTap: () {}, icon: Icons.search_rounded),
-          CustomIconButton(onTap: () {}, icon: Icons.more_vert),
+          CustomIconButton(
+            onTap: () {
+              ref
+                  .watch(contactsControllerProvider)
+                  .when(
+                    data: (allContacts) {
+                      print(allContacts.length);
+                      print(allContacts[0].length);
+                      print(allContacts[1].length);
+                      UserModel a = allContacts[1][0];
+                      print(a.phoneNumber);
+                    },
+                    error: (error, stackTrace) {
+                      return SizedBox();
+                    },
+                    loading: () {
+                      return Text(
+                        'counting...',
+                        style: TextStyle(fontSize: 12),
+                      );
+                    },
+                  );
+            },
+            icon: Icons.more_vert,
+          ),
         ],
       ),
       body: ref
@@ -131,7 +155,8 @@ class ContactPage extends ConsumerWidget {
                               ),
                             ContactCard(
                               contactsSource: phoneContacts,
-                              onTap: shareSmsLink(phoneContacts.phoneNumber),
+                              onTap: () =>
+                                  shareSmsLink(phoneContacts.phoneNumber),
                             ),
                           ],
                         );

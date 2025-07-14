@@ -1,19 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/extension/custom_theme_extension.dart';
 import 'package:whatsapp_clone/common/helper/show_last_seen.dart';
 import 'package:whatsapp_clone/common/models/user_model.dart';
 import 'package:whatsapp_clone/common/utils/colors.dart';
 import 'package:whatsapp_clone/common/widgets/custom_icon_button.dart';
+import 'package:whatsapp_clone/feature/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/feature/chat/widgets/custom_list_tile.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key, required this.user});
 
   final UserModel user;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: context.theme.profilePagebg,
       body: CustomScrollView(
@@ -38,10 +40,30 @@ class ProfilePage extends StatelessWidget {
                           color: context.theme.greyColor,
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Text(
-                        'last seen ${lastSeenMessage(user.lastSeen)} ago',
-                        style: TextStyle(color: context.theme.greyColor),
+                      SizedBox(height: 6),
+                      StreamBuilder(
+                        stream: ref
+                            .read(authControllerProvider)
+                            .getuserPresenceStatus(uid: user.uid),
+                        builder: (_, snapshot) {
+                          if (snapshot.connectionState !=
+                              ConnectionState.active) {
+                            return Text(
+                              'Not connected',
+                              style: TextStyle(color: context.theme.greyColor),
+                            );
+                          }
+                          final singleUserModel = snapshot.data!;
+                          final lastMessage = lastSeenMessage(
+                            singleUserModel.lastSeen,
+                          );
+                          return Text(
+                            singleUserModel.active
+                                ? 'Online'
+                                : 'last seen $lastMessage ago',
+                            style: TextStyle(color: context.theme.greyColor),
+                          );
+                        },
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -128,20 +150,20 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
+}
 
-  iconWithText({required IconData icon, required String text}) {
-    return Padding(
-      padding: EdgeInsets.all(20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 30, color: greenDark),
-          SizedBox(height: 10),
-          Text(text, style: TextStyle(color: greenDark)),
-        ],
-      ),
-    );
-  }
+Widget iconWithText({required IconData icon, required String text}) {
+  return Padding(
+    padding: EdgeInsets.all(20),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 28, color: greenDark),
+        SizedBox(height: 6),
+        Text(text, style: TextStyle(color: greenDark)),
+      ],
+    ),
+  );
 }
 
 class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
@@ -149,7 +171,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
   final double maxHeaderHeight = 180;
   final double minHeaderHeight = kToolbarHeight + 20;
   final double maxImageSize = 130;
-  final double minImageSize = 40;
+  final double minImageSize = 32;
 
   SliverPersistentDelegate({required this.user});
 
@@ -161,12 +183,12 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
   ) {
     final size = MediaQuery.of(context).size;
     final percent = shrinkOffset / (maxHeaderHeight - 35);
-    final percent2 = shrinkOffset / (maxHeaderHeight - 35);
+    final percent2 = shrinkOffset / (maxHeaderHeight);
     final currentImageSize = (maxImageSize * (1 - percent)).clamp(
       minImageSize,
       maxImageSize,
     );
-    final currentImagePosition = ((size.width / 2) - 65 * (1 - percent)).clamp(
+    final currentImagePosition = ((size.width / 2 - 65) * (1 - percent)).clamp(
       minImageSize,
       maxImageSize,
     );
@@ -192,10 +214,14 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
             Positioned(
               left: 0,
               top: MediaQuery.of(context).viewPadding.top + 5,
-              child: BackButton(
-                color: percent2 > 0.3
+              child: CustomIconButton(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icons.arrow_back_ios_rounded,
+                iconColor: percent2 > 0.3
                     ? Colors.white.withValues(alpha: percent2)
-                    : greyBackground,
+                    : null,
               ),
             ),
             Positioned(
@@ -206,7 +232,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                 icon: Icons.more_vert,
                 iconColor: percent2 > 0.3
                     ? Colors.white.withValues(alpha: percent2)
-                    : greyBackground,
+                    : null,
               ),
             ),
             Positioned(
@@ -221,6 +247,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       image: CachedNetworkImageProvider(user.profileImageUrl),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

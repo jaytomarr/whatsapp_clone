@@ -69,57 +69,57 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
     return showModalBottomSheet(
       context: context,
       builder: (context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ShortHBar(),
-            Row(
-              children: [
-                SizedBox(width: 20),
-                Text(
-                  'Profile photo',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                ),
-                Spacer(),
-                CustomIconButton(
-                  onTap: () => Navigator.pop(context),
-                  icon: Icons.close,
-                ),
-                SizedBox(width: 15),
-              ],
-            ),
-            Divider(color: context.theme.greyColor!.withValues(alpha: 0.3)),
-            SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                imagePickerIcon(
-                  onTap: pickImageFromCamera,
-                  icon: Icons.camera_alt_rounded,
-                  text: 'Camera',
-                ),
-                SizedBox(width: 20),
-                imagePickerIcon(
-                  onTap: () async {
-                    Navigator.pop(context);
-                    final image = await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => ImagePickerPage(),
-                      ),
-                    );
-                    if (image == null) return;
-                    setState(() {
-                      imageGallery = image;
-                      imageCamera = null;
-                    });
-                  },
-                  icon: Icons.photo_outlined,
-                  text: 'Gallery',
-                ),
-              ],
-            ),
-            SizedBox(height: 30),
-          ],
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewPadding.bottom,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ShortHBar(),
+              Row(
+                children: [
+                  SizedBox(width: 20),
+                  Text(
+                    'Profile photo',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(width: 20),
+                ],
+              ),
+              Divider(color: context.theme.greyColor!.withValues(alpha: 0.3)),
+              SizedBox(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  imagePickerIcon(
+                    onTap: pickImageFromCamera,
+                    icon: Icons.camera_alt_rounded,
+                    text: 'Camera',
+                  ),
+                  SizedBox(width: 20),
+                  imagePickerIcon(
+                    onTap: () async {
+                      Navigator.pop(context);
+                      final image = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ImagePickerPage(),
+                        ),
+                      );
+                      if (image == null) return;
+                      setState(() {
+                        imageGallery = image;
+                        imageCamera = null;
+                      });
+                    },
+                    icon: Icons.photo_outlined,
+                    text: 'Gallery',
+                  ),
+                ],
+              ),
+              // SizedBox(height: 10),
+            ],
+          ),
         );
       },
     );

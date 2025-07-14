@@ -14,7 +14,7 @@ class ContactsRepository {
 
   ContactsRepository({required this.firestore});
 
-  Future<List<List>> getAllContacts() async {
+  Future<List<List<UserModel>>> getAllContacts() async {
     //conatacts saved in the user's phone and have a account
     List<UserModel> firebaseContacts = [];
     //conatacts saved in the user's phone and doesn't have a account
@@ -26,12 +26,18 @@ class ContactsRepository {
         final allContactsInThePhone = await FlutterContacts.getContacts(
           withProperties: true,
         );
+        String normalizePhone(String phone) {
+          return phone.replaceAll(
+            RegExp(r'[^\d+]'),
+            '',
+          ); // removes everything except digits
+        }
 
         bool isContactFound = false;
         for (var contact in allContactsInThePhone) {
           for (var firebaseContactData in userCollection.docs) {
             var firebaseContact = UserModel.fromMap(firebaseContactData.data());
-            if (contact.phones[0].number.replaceAll('', '') ==
+            if (normalizePhone(contact.phones[0].number) ==
                 firebaseContact.phoneNumber) {
               firebaseContacts.add(firebaseContact);
               isContactFound = true;
@@ -46,7 +52,7 @@ class ContactsRepository {
                 profileImageUrl: '',
                 active: false,
                 lastSeen: 0,
-                phoneNumber: contact.phones[0].number.replaceAll('', ''),
+                phoneNumber: normalizePhone(contact.phones[0].number),
                 groupId: [],
               ),
             );

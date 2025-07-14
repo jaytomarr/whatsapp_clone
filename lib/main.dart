@@ -6,8 +6,6 @@ import 'package:whatsapp_clone/common/routes/routes.dart';
 import 'package:whatsapp_clone/common/theme/dark_theme.dart';
 import 'package:whatsapp_clone/common/theme/light_theme.dart';
 import 'package:whatsapp_clone/feature/auth/controller/auth_controller.dart';
-import 'package:whatsapp_clone/feature/auth/pages/user_info_page.dart';
-import 'package:whatsapp_clone/feature/auth/pages/verification_page.dart';
 import 'package:whatsapp_clone/feature/home/pages/home_page.dart';
 import 'package:whatsapp_clone/feature/welcome/pages/welcome_page.dart';
 import 'package:whatsapp_clone/firebase_options.dart';
@@ -31,24 +29,23 @@ class MyApp extends ConsumerWidget {
       theme: lightTheme(),
       darkTheme: darkTheme(),
       themeMode: ThemeMode.system,
-      home: UserInfoPage(),
-      // home: ref
-      //     .watch(userInfoAuthProvider)
-      //     .when(
-      //       data: (user) {
-      //         FlutterNativeSplash.remove();
-      //         if (user == null) return WelcomePage();
-      //         return HomePage();
-      //       },
-      //       error: (error, trace) {
-      //         return Scaffold(
-      //           body: Center(child: Text('Something went wrong!')),
-      //         );
-      //       },
-      //       loading: () {
-      //         return SizedBox();
-      //       },
-      //     ),
+      home: ref
+          .watch(userInfoAuthProvider)
+          .when(
+            data: (user) {
+              FlutterNativeSplash.remove();
+              if (user == null) return WelcomePage();
+              return HomePage();
+            },
+            error: (error, trace) {
+              return Scaffold(
+                body: Center(child: Text('Something went wrong!')),
+              );
+            },
+            loading: () {
+              return SizedBox();
+            },
+          ),
       onGenerateRoute: Routes.onGenerateRoute,
     );
   }

@@ -22,14 +22,32 @@ class ChatsHomePage extends ConsumerWidget {
       body: StreamBuilder<List<LastMessageModel>>(
         stream: ref.watch(chatControllerProvider).getAllLastMessageList(),
         builder: (_, snapshot) {
+          print(
+            '📦 Snapshot: ${snapshot.connectionState}, hasData: ${snapshot.hasData}',
+          );
+          print('📦 Snapshot data: ${snapshot.data}');
+
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator(color: greenDark));
           }
+
+          final lastMessages = snapshot.data;
+
+          if (lastMessages == null || lastMessages.isEmpty) {
+            return Center(
+              child: TextButton(
+                onPressed: () {
+                  print(snapshot.data);
+                },
+                child: Text("No chats yet"),
+              ),
+            );
+          }
           return ListView.builder(
-            itemCount: snapshot.data!.length,
+            itemCount: lastMessages.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              final lastMessageData = snapshot.data![index];
+              final lastMessageData = lastMessages[index];
               return ListTile(
                 onTap: () {
                   Navigator.pushNamed(
@@ -65,20 +83,18 @@ class ChatsHomePage extends ConsumerWidget {
                     ),
                   ],
                 ),
-                subtitle: Padding(
-                  padding: EdgeInsets.only(top: 3),
-                  child: Text(
-                    lastMessageData.lastMessage,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: context.theme.greyColor),
-                  ),
+                subtitle: Text(
+                  lastMessageData.lastMessage,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: context.theme.greyColor),
                 ),
               );
             },
           );
         },
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () => navigateToContactsPage(context),
         child: Icon(Icons.chat),

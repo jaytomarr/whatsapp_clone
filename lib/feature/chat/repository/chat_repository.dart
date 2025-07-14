@@ -104,31 +104,77 @@ class ChatRepository {
   }
 
   Stream<List<LastMessageModel>> getAllLastMessageList() {
+    print('🔄 Listening for last message updates...');
     return firestore
         .collection('users')
         .doc(auth.currentUser!.uid)
         .collection('chats')
         .snapshots()
         .asyncMap((event) async {
-          List<LastMessageModel> contacts = [];
-          for (var document in event.docs) {
-            final lastMessage = LastMessageModel.fromMap(document.data());
-            final userData = await firestore
-                .collection('users')
-                .doc(lastMessage.contactId)
-                .get();
-            final user = UserModel.fromMap(userData.data()!);
-            contacts.add(
-              LastMessageModel(
+          print('📥 Received snapshot with ${event.docs.length} documents');
+
+          try {
+            final futures = event.docs.map((doc) async {
+              final data = doc.data();
+              print('📄 Raw doc data: $data');
+
+              final lastMessage = LastMessageModel.fromMap(data);
+
+              final userSnap = await firestore
+                  .collection('users')
+                  .doc(lastMessage.contactId)
+                  .get();
+
+              if (!userSnap.exists) {
+                print('⚠️ User with id ${lastMessage.contactId} not found');
+                return null; // Don't add this to list
+              }
+
+              final user = UserModel.fromMap(userSnap.data()!);
+
+              return LastMessageModel(
                 username: user.username,
                 profileImageUrl: user.profileImageUrl,
                 contactId: lastMessage.contactId,
                 timeSent: lastMessage.timeSent,
                 lastMessage: lastMessage.lastMessage,
-              ),
-            );
+              );
+            }).toList();
+
+            final contactsWithNulls = await Future.wait(futures);
+            final contacts = contactsWithNulls
+                .whereType<LastMessageModel>()
+                .toList();
+            print('✅ Returning ${contacts.length} contacts');
+
+            return contacts;
+          } catch (e, st) {
+            print('❌ Error in asyncMap: $e');
+            print(st);
+            return []; // Return empty list instead of null
           }
-          return contacts;
+          // List<LastMessageModel> contacts = [];
+          // for (var document in event.docs) {
+          //   final lastMessage = LastMessageModel.fromMap(document.data());
+          //   print('➡️ Contact ID: ${lastMessage.contactId}');
+          //   print('➡️ Last Message: ${lastMessage.lastMessage}');
+          //   final userData = await firestore
+          //       .collection('users')
+          //       .doc(lastMessage.contactId)
+          //       .get();
+          //   final user = UserModel.fromMap(userData.data()!);
+          //   contacts.add(
+          //     LastMessageModel(
+          //       username: user.username,
+          //       profileImageUrl: user.profileImageUrl,
+          //       contactId: lastMessage.contactId,
+          //       timeSent: lastMessage.timeSent,
+          //       lastMessage: lastMessage.lastMessage,
+          //     ),
+          //   );
+          // }
+          // print('✅ Returning ${contacts.length} contacts');
+          // return contacts;
         });
   }
 
@@ -216,6 +262,11 @@ class ChatRepository {
     required DateTime timeSent,
     required String receiverId,
   }) async {
+    print('✅ saveAsLastMessage CALLED');
+    print('Sender: ${auth.currentUser!.uid}');
+    print('Receiver: $receiverId');
+    print('Message: $lastMessage');
+
     final receiverLastMessage = LastMessageModel(
       username: senderUserData.username,
       profileImageUrl: senderUserData.profileImageUrl,
@@ -245,5 +296,7 @@ class ChatRepository {
         .collection('chats')
         .doc(receiverId)
         .set(senderLastMessage.toMap());
+
+    print('✅ saveAsLastMessage COMPLETED');
   }
 }

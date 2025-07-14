@@ -157,14 +157,12 @@ class AuthRepository {
           Navigator.of(context).pushNamedAndRemoveUntil(
             Routes.verification,
             (route) => false,
-            arguments: [
-              {'smsCodeId': smsCodeId, 'phoneNumber': phoneNumber},
-            ],
+            arguments: {'smsCodeId': smsCodeId, 'phoneNumber': phoneNumber},
           );
         },
         codeAutoRetrievalTimeout: (String smsCodeId) {},
       );
-    } on FirebaseAuth catch (e) {
+    } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       showAlertDilaog(context: context, message: e.toString());
     }

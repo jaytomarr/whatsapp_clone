@@ -29,11 +29,11 @@ class MessageCard extends StatelessWidget {
             ? 80
             : haveNip
             ? 10
-            : 15,
+            : 16,
         right: isSender
             ? haveNip
-                  ? 15
-                  : 10
+                  ? 10
+                  : 16
             : 80,
       ),
       child: ClipPath(
@@ -75,20 +75,20 @@ class MessageCard extends StatelessWidget {
                       )
                     : Padding(
                         padding: EdgeInsets.only(
-                          top: 8,
-                          bottom: 8,
+                          top: 6,
+                          bottom: 0,
                           left: isSender ? 10 : 15,
                           right: isSender ? 15 : 10,
                         ),
                         child: Text(
                           "${message.textMessage}         ",
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 16, height: 1.3),
                         ),
                       ),
               ),
             ),
             Positioned(
-              bottom: message.type == MyMessagetype.MessageType.text ? 8 : 4,
+              bottom: message.type == MyMessagetype.MessageType.text ? 4 : 4,
               right: message.type == MyMessagetype.MessageType.text
                   ? isSender
                         ? 15

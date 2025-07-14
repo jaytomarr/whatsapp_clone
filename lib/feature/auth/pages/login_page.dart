@@ -25,6 +25,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final phoneNumber = phoneNumberController.text;
     final countryName = countryNameController.text;
     final countryCode = countryCodeController.text;
+    print('+$countryCode$phoneNumber');
 
     if (phoneNumber.isEmpty) {
       return showAlertDilaog(
@@ -54,9 +55,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   showCountryCodePicker() {
-    print(phoneNumberController.text);
-    print(countryNameController.text);
-    print(countryCodeController.text);
     showCountryPicker(
       context: context,
       showPhoneCode: true,

@@ -37,8 +37,7 @@ class ChatPage extends ConsumerWidget {
           },
           child: Row(
             children: [
-              Icon(Icons.arrow_back_ios_rounded),
-              SizedBox(width: 4),
+              Icon(Icons.arrow_back_ios_rounded, color: Colors.white),
               Hero(
                 tag: 'profile',
                 child: Container(

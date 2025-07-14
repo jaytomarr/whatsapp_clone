@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class LastMessageModel {
   final String username;
   final String profileImageUrl;
@@ -18,7 +20,10 @@ class LastMessageModel {
       username: map['username'] ?? '',
       profileImageUrl: map['profileImageUrl'] ?? '',
       contactId: map['contactId'] ?? '',
-      timeSent: DateTime.fromMillisecondsSinceEpoch(map['timeSent']),
+      // timeSent: DateTime.fromMillisecondsSinceEpoch(map['timeSent']),
+      timeSent: map['timeSent'] is Timestamp
+          ? (map['timeSent'] as Timestamp).toDate()
+          : DateTime.parse(map['timeSent']),
       lastMessage: map['lastMessage'] ?? '',
     );
   }
@@ -28,7 +33,8 @@ class LastMessageModel {
       'username': username,
       'profileImageUrl': profileImageUrl,
       'contactId': contactId,
-      'timeSent': timeSent.toIso8601String(),
+      // 'timeSent': timeSent.toIso8601String(),
+      'timeSent': Timestamp.fromDate(timeSent),
       'lastMessage': lastMessage,
     };
   }

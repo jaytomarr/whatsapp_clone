@@ -122,7 +122,7 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
           duration: Duration(milliseconds: 200),
           height: cardHeight,
           width: double.maxFinite,
-          margin: EdgeInsets.symmetric(horizontal: 10),
+          margin: EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
             color: context.theme.receiverChatCardBg,
             borderRadius: BorderRadius.circular(20),
@@ -183,8 +183,12 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(5),
+        Container(
+          height: 52,
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewPadding.bottom - 2,
+          ),
+          padding: EdgeInsets.only(left: 5, right: 5, top: 5),
           child: Row(
             children: [
               Expanded(
@@ -217,26 +221,29 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
                         iconColor: Theme.of(context).iconTheme.color,
                       ),
                     ),
-                    suffix: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CustomIconButton(
-                          onTap: () => setState(
-                            () => cardHeight == 0
-                                ? cardHeight == 220
-                                : cardHeight = 0,
+                    suffixIcon: Material(
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CustomIconButton(
+                            onTap: () => setState(
+                              () => cardHeight == 0
+                                  ? cardHeight = 220
+                                  : cardHeight = 0,
+                            ),
+                            icon: cardHeight == 0
+                                ? Icons.attach_file
+                                : Icons.close,
+                            iconColor: Theme.of(context).iconTheme.color,
                           ),
-                          icon: cardHeight == 0
-                              ? Icons.attach_file
-                              : Icons.close,
-                          iconColor: Theme.of(context).iconTheme.color,
-                        ),
-                        CustomIconButton(
-                          onTap: () {},
-                          icon: Icons.camera_alt_outlined,
-                          iconColor: Theme.of(context).iconTheme.color,
-                        ),
-                      ],
+                          CustomIconButton(
+                            onTap: () {},
+                            icon: Icons.camera_alt_outlined,
+                            iconColor: Theme.of(context).iconTheme.color,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -11,7 +11,11 @@ ThemeData darkTheme() {
     extensions: [CustomThemeExtension.darkMode],
     appBarTheme: AppBarTheme(
       backgroundColor: greyBackground,
-      titleTextStyle: TextStyle(fontSize: 18, color: greyDark),
+      titleTextStyle: TextStyle(
+        fontSize: 18,
+        color: greyDark,
+        fontWeight: FontWeight.w600,
+      ),
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,
@@ -51,7 +55,7 @@ ThemeData darkTheme() {
     ),
     listTileTheme: ListTileThemeData(
       iconColor: greyDark,
-      tileColor: backgroundDark,
+      // tileColor: greyBackground,
     ),
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStatePropertyAll(greyDark),
