@@ -10,7 +10,7 @@ String lastSeenMessage(lastSeen) {
                   ? "${differenceDuration.inDays} ${differenceDuration.inDays == 1 ? 'day' : 'days'}"
                   : "${differenceDuration.inHours} ${differenceDuration.inHours == 1 ? 'hour' : 'hours'}"
             : "${differenceDuration.inMinutes} ${differenceDuration.inMinutes == 1 ? 'minute' : 'minutes'}"
-      : 'few moments ago';
+      : 'few moments';
 
   return finalMessage;
 }

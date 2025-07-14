@@ -168,10 +168,10 @@ Widget iconWithText({required IconData icon, required String text}) {
 
 class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
   final UserModel user;
-  final double maxHeaderHeight = 180;
-  final double minHeaderHeight = kToolbarHeight + 20;
+  final double maxHeaderHeight = 200;
+  final double minHeaderHeight = kToolbarHeight + 32;
   final double maxImageSize = 130;
-  final double minImageSize = 32;
+  final double minImageSize = 34;
 
   SliverPersistentDelegate({required this.user});
 
@@ -181,14 +181,14 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size.width;
     final percent = shrinkOffset / (maxHeaderHeight - 35);
     final percent2 = shrinkOffset / (maxHeaderHeight);
     final currentImageSize = (maxImageSize * (1 - percent)).clamp(
       minImageSize,
       maxImageSize,
     );
-    final currentImagePosition = ((size.width / 2 - 65) * (1 - percent)).clamp(
+    final currentImagePosition = ((size / 2) * (1 - percent)).clamp(
       minImageSize,
       maxImageSize,
     );
@@ -201,7 +201,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
         child: Stack(
           children: [
             Positioned(
-              top: MediaQuery.of(context).viewPadding.top + 15,
+              top: MediaQuery.of(context).viewPadding.top + 20,
               left: currentImagePosition + 50,
               child: Text(
                 user.username,
@@ -213,7 +213,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
             ),
             Positioned(
               left: 0,
-              top: MediaQuery.of(context).viewPadding.top + 5,
+              top: MediaQuery.of(context).viewPadding.top + 10,
               child: CustomIconButton(
                 onTap: () {
                   Navigator.of(context).pop();
@@ -221,23 +221,23 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                 icon: Icons.arrow_back_ios_rounded,
                 iconColor: percent2 > 0.3
                     ? Colors.white.withValues(alpha: percent2)
-                    : null,
+                    : context.theme.greyColor,
               ),
             ),
             Positioned(
               right: 0,
-              top: MediaQuery.of(context).viewPadding.top + 5,
+              top: MediaQuery.of(context).viewPadding.top + 10,
               child: CustomIconButton(
                 onTap: () {},
                 icon: Icons.more_vert,
                 iconColor: percent2 > 0.3
                     ? Colors.white.withValues(alpha: percent2)
-                    : null,
+                    : context.theme.greyColor,
               ),
             ),
             Positioned(
-              left: currentImagePosition,
-              top: MediaQuery.of(context).viewPadding.top + 5,
+              left: currentImagePosition + 10,
+              top: MediaQuery.of(context).viewPadding.top + 10,
               bottom: 0,
               child: Hero(
                 tag: 'profile',

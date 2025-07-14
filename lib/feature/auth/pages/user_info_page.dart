@@ -61,7 +61,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
         imageGallery = null;
       });
     } catch (e) {
-      showAlertDilaog(context: context, message: e.toString());
+      // showAlertDilaog(context: context, message: e.toString());
     }
   }
 

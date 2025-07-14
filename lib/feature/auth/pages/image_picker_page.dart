@@ -26,14 +26,35 @@ class _ImagePickerState extends State<ImagePickerPage> {
   fetchAllImages() async {
     lastPage = currentPage;
     final permission = await PhotoManager.requestPermissionExtend();
-    if (!permission.isAuth) return PhotoManager.openSetting();
+    // if (!permission.isAuth) return PhotoManager.openSetting();
+    // if (permission.hasAccess) {
+    //   // Permissions granted
+    //   // fetchAllImages will continue
+    // } else if (permission.isAuth == false) {
+    //   // User denied
+    //   await PhotoManager.openSetting();
+    //   return;
+    // }
+    if (!permission.hasAccess) {
+      // If denied, open app settings
+      await PhotoManager.openSetting();
+      return;
+    }
+    print("✅ Permission granted");
+    //
     List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
       type: RequestType.image,
       onlyAll: true,
     );
+    //
+    if (albums.isEmpty) {
+      print("❌ No albums found");
+      return;
+    }
+    //
     List<AssetEntity> photos = await albums[0].getAssetListPaged(
       page: currentPage,
-      size: 2,
+      size: 50,
     );
     List<Widget> temp = [];
     for (var asset in photos) {
