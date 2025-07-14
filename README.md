@@ -5,7 +5,7 @@ Real-time chat application built using **Flutter**, **Firebase**, and **Riverpod
 - Live One-to-One Text Messaging  
 - Real-time Image Sharing
 
-## Tech
+## Tech Stack
 
 - **Flutter** (UI Framework)  
 - **Firebase Auth** (Phone OTP)  
